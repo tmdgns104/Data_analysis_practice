@@ -402,6 +402,7 @@ from sklearn.model_selection import train_test_split
 from lightgbm import LGBMClassifier
 X_train, X_valid, y_train, y_valid = train_test_split(X,y,random_state=30,test_size=0.3)
 
+print(X_train.columns)
 
 model = LGBMClassifier()
 model.fit(X_train, y_train)
