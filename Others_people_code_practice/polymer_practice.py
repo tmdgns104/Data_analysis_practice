@@ -44,6 +44,11 @@ def make_smile_canonical(smile):
     except:
         return np.nan
         #SMILES 파싱이 실패하면 결측치
+        #RDKit은 의도적으로 불완전한 분자 구조를 허용하지 않음.
+        # *, [R], [X] 등의 기호는 Polymer 분야나 Fragment 기반 디자인에서만 특수한 의미를 가짐.
+        # 캐글에서 polymer 관련 데이터셋을 사용할 경우, 이런 dummy symbol을 가진 SMILES는 예측에 쓸 수 없음.
+
+
 
 train['SMILES'] = train['SMILES'].apply(make_smile_canonical)
 test['SMILES'] = test['SMILES'].apply(make_smile_canonical)

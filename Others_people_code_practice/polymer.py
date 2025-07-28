@@ -24,12 +24,14 @@ from rdkit.Chem import rdmolops
 
 
 
-lass CFG:
+class CFG:
     TARGETS = ['Tg', 'FFV', 'Tc', 'Density', 'Rg']
     SEED = 42
     FOLDS = 5
-    PATH = '/kaggle/input/neurips-open-polymer-prediction-2025/'
-
+    PATH = 'D:\\Data_Analysis\\Others_people_code_practice\\neurips-open-polymer-prediction-2025\\'
+print('--------------------------------------------------')
+print(CFG.PATH + 'train.csv')
+print('--------------------------------------------------')
 train = pd.read_csv(CFG.PATH + 'train.csv')
 test = pd.read_csv(CFG.PATH + 'test.csv')
 
@@ -45,20 +47,20 @@ train['SMILES'] = train['SMILES'].apply(lambda s: make_smile_canonical(s))
 test['SMILES'] = test['SMILES'].apply(lambda s: make_smile_canonical(s))
 
 # https://www.kaggle.com/datasets/minatoyukinaxlisa/tc-smiles
-data_tc = pd.read_csv('/kaggle/input/tc-smiles/Tc_SMILES.csv')
+data_tc = pd.read_csv('D:\\Data_Analysis\\Others_people_code_practice\\tc-smiles\\Tc_SMILES.csv')
 data_tc = data_tc.rename(columns={'TC_mean': 'Tc'})
 
 # https://springernature.figshare.com/articles/dataset/dataset_with_glass_transition_temperature/24219958?file=42507037
-data_tg2 = pd.read_csv('/kaggle/input/smiles-extra-data/JCIM_sup_bigsmiles.csv', usecols=['SMILES', 'Tg (C)'])
+data_tg2 = pd.read_csv('D:\\Data_Analysis\\Others_people_code_practice\\JCIM_sup_bigsmiles.csv', usecols=['SMILES', 'Tg (C)'])
 data_tg2 = data_tg2.rename(columns={'Tg (C)': 'Tg'})
 
 # https://www.sciencedirect.com/science/article/pii/S2590159123000377#ec0005
-data_tg3 = pd.read_excel('/kaggle/input/smiles-extra-data/data_tg3.xlsx')
+data_tg3 = pd.read_excel('D:\\Data_Analysis\\Others_people_code_practice\\data_tg3.xlsx')
 data_tg3 = data_tg3.rename(columns={'Tg [K]': 'Tg'})
 data_tg3['Tg'] = data_tg3['Tg'] - 273.15
 
 # https://github.com/Duke-MatSci/ChemProps
-data_dnst = pd.read_excel('/kaggle/input/smiles-extra-data/data_dnst1.xlsx')
+data_dnst = pd.read_excel('D:\\Data_Analysis\\Others_people_code_practice\\data_dnst1.xlsx')
 data_dnst = data_dnst.rename(columns={'density(g/cm3)': 'Density'})[['SMILES', 'Density']]
 data_dnst['SMILES'] = data_dnst['SMILES'].apply(lambda s: make_smile_canonical(s))
 data_dnst = data_dnst[
@@ -282,7 +284,7 @@ for target in CFG.TARGETS:
             ],
         )
 
-        with open(f'/kaggle/working/lgb_{target}_fold_{i}.pkl', 'wb') as f:
+        with open(f'D:\\Data_Analysis\\Others_people_code_practice\\lgb_{target}_fold_{i}.pkl', 'wb') as f:
             pickle.dump(model_lgb, f)
 
         val_preds = model_lgb.predict(x_val, num_iteration=model_lgb.best_iteration_)
