@@ -28,7 +28,7 @@ class CFG:
     TARGETS = ['Tg', 'FFV', 'Tc', 'Density', 'Rg']  # 예측 대상 Tg: 유리전이온도 FFV: 자유부피비 Tc: 임계온도 Density: 밀도 Rg: 반지름
     SEED = 42 #무작위 값을 생성할 때 기준이 되는 숫자 42는 관행적 농담
     FOLDS = 5 #K-folds를 할때 몇등분으로 나눌지
-    PATH = '/kaggle/input/neurips-open-polymer-prediction-2025/'  # 데이터 경로
+    PATH = 'D:\\Data_Analysis\\Others_people_code_practice\\neurips-open-polymer-prediction-2025\\'  # 데이터 경로
 
 # 학습/테스트 데이터 로드
 train = pd.read_csv(CFG.PATH + 'train.csv')
@@ -62,24 +62,24 @@ test['SMILES'] = test['SMILES'].apply(make_smile_canonical)
 #train 데이터에 병합되거나 결측 보완에 활용
 
 # 1. Tc 데이터
-data_tc = pd.read_csv('/kaggle/input/tc-smiles/Tc_SMILES.csv')
+data_tc = pd.read_csv('D:\\Data_Analysis\\Others_people_code_practice\\tc-smiles\\Tc_SMILES.csv')
 data_tc = data_tc.rename(columns={'TC_mean': 'Tc'})
 #train 데이터와 컬러명 맞추기 TC_mean -> TC
 
 # 2. Tg 데이터 1
-data_tg2 = pd.read_csv('/kaggle/input/smiles-extra-data/JCIM_sup_bigsmiles.csv', usecols=['SMILES', 'Tg (C)'])
+data_tg2 = pd.read_csv('D:\\Data_Analysis\\Others_people_code_practice\\JCIM_sup_bigsmiles.csv', usecols=['SMILES', 'Tg (C)'])
 data_tg2 = data_tg2.rename(columns={'Tg (C)': 'Tg'})
 #train 데이터와 컬러명 맞추기 Tg (C) -> Tg
 
 # 3. Tg 데이터 2 (K -> C 변환)
-data_tg3 = pd.read_excel('/kaggle/input/smiles-extra-data/data_tg3.xlsx')
+data_tg3 = pd.read_excel('D:\\Data_Analysis\\Others_people_code_practice\\data_tg3.xlsx')
 data_tg3 = data_tg3.rename(columns={'Tg [K]': 'Tg'})
 data_tg3['Tg'] = data_tg3['Tg'] - 273.15
 #train 데이터와 컬러명 맞추기 Tg [K] -> Tg
 #캘빈에서 도씨로 변경
 
 # 4. 밀도 데이터 (float 변환 및 전처리)
-data_dnst = pd.read_excel('/kaggle/input/smiles-extra-data/data_dnst1.xlsx')
+data_dnst = pd.read_excel('D:\\Data_Analysis\\Others_people_code_practice\\data_dnst1.xlsx')
 data_dnst = data_dnst.rename(columns={'density(g/cm3)': 'Density'})[['SMILES', 'Density']]
 #밀도만 가져오고 컬럼 같게 맞추기
 data_dnst['SMILES'] = data_dnst['SMILES'].apply(make_smile_canonical)
@@ -354,7 +354,7 @@ for target in CFG.TARGETS:
             ],
         )
 
-        with open(f'/kaggle/working/lgb_{target}_fold_{i}.pkl', 'wb') as f:
+        with open(f'D:\\Data_Analysis\\Others_people_code_practice\\lgb_{target}_fold_{i}.pkl', 'wb') as f:
             pickle.dump(model_lgb, f)
 
         val_preds = model_lgb.predict(x_val, num_iteration=model_lgb.best_iteration_)
